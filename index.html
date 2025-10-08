@@ -2,64 +2,92 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Grégory Sauteret – Recruteur Tech Global</title>
 <meta name="description" content="Recruteur tech global – sourcing international, process d'entretien, secteurs défense, cybersécurité, spatial, industrie 4.0." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 
 <style>
-  :root{ --bg:#f9fafb; --text:#0f172a; --muted:#475569; --brand:#1e3a8a; --accent:#fbbf24; }
+  :root{
+    --bg:#f9fafb; --text:#0f172a; --muted:#475569;
+    --brand:#1e3a8a; --accent:#fbbf24;
+  }
   @media (prefers-color-scheme:dark){
-    :root{ --bg:#0b0c10; --text:#e8eaed; --muted:#a6adbb; --brand:#1e40af; --accent:#facc15; }
+    :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--accent:#facc15;}
   }
 
-  *{box-sizing:border-box}
-  body{ margin:0; font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.6;
+  }
 
-  /* NAV (effet balayage doré) */
-  nav{ position:fixed; top:0; left:0; right:0; z-index:1000; height:56px; background:var(--brand);
-       display:flex; align-items:center; justify-content:flex-end; gap:20px; padding:0 24px; box-shadow:0 2px 6px rgba(0,0,0,.1) }
-  nav a{ color:#fff; text-decoration:none; font-weight:600; position:relative; overflow:hidden; padding:0 2px; transition:color .3s; }
-  nav a::before{ content:""; position:absolute; top:0; left:-120%; width:100%; height:100%;
-                 background:linear-gradient(120deg,transparent,rgba(251,191,36,.85),transparent); transition:left .6s ease; }
-  nav a:hover{ color:var(--accent) }
-  nav a:hover::before{ left:120% }
-  nav a::after{ content:""; position:absolute; left:0; bottom:-3px; width:0; height:2px; background:var(--accent); transition:width .3s }
-  nav a:hover::after, nav a[aria-current="page"]::after{ width:100% }
-  nav a[aria-current="page"]{ color:var(--accent) }
+  /* NAVIGATION RESPONSIVE */
+  nav{
+    position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
+    background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
+    display:flex;align-items:center;justify-content:center;overflow-x:auto;
+    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  }
+  nav::-webkit-scrollbar{display:none;}
+  nav a{
+    flex:0 0 auto;
+    color:#fff;text-decoration:none;font-weight:600;
+    padding:0 14px;line-height:56px;font-size:15px;
+    position:relative;transition:color .3s;
+  }
+  nav a:hover,nav a[aria-current="page"]{color:var(--accent);}
+  nav a::after{
+    content:"";position:absolute;left:0;bottom:8px;height:2px;width:0;background:var(--accent);
+    transition:width .3s;
+  }
+  nav a:hover::after,nav a[aria-current="page"]::after{width:100%;}
 
   /* HEADER */
-  header{ margin-top:56px; background:var(--brand); color:#fff; padding:26px 20px 18px; text-align:center; }
-  header h1{ margin:0; font-size:clamp(26px,4.6vw,36px) }
-  header p{ margin:4px 0 0; opacity:.95 }
+  header{margin-top:56px;background:var(--brand);color:#fff;text-align:center;padding:24px 10px;}
+  header h1{font-size:clamp(24px,6vw,34px);}
+  header p{margin-top:4px;font-size:clamp(14px,3.5vw,17px);opacity:.95;}
 
-  main{ max-width:980px; margin:0 auto; padding:6px 20px 0; }
+  main{max-width:880px;margin:0 auto;padding:20px 16px;}
 
-  /* CARROUSEL */
-  .wrap{ position:relative; min-height:34vh; display:flex; justify-content:center; align-items:center; overflow:hidden; margin-top:0; }
-  .slide{ position:absolute; inset:0; display:flex; flex-direction:column; gap:6px; justify-content:center; align-items:center; text-align:center;
-          opacity:0; transition:opacity .45s ease; padding:0 20px; }
-  .slide.show{ opacity:1 }
-  .slide h2{ margin:0; color:var(--brand); font-size:clamp(22px,3.6vw,30px) }
-  .slide p{ margin:4px 0; max-width:760px }
+  /* SLIDES */
+  .wrap{position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:42vh;}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .4s ease;padding:0 18px;}
+  .slide.show{opacity:1;}
+  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,28px);}
+  .slide p{max-width:700px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
 
-  /* Barre + astuce compactes sous le texte */
-  .progress{ width:min(440px,58%); height:4px; background:#e5e7eb; border-radius:999px; overflow:hidden; margin:6px 0 4px; }
-  @media (prefers-color-scheme:dark){ .progress{ background:rgba(255,255,255,.18) } }
-  .bar{ height:100%; width:0; background:var(--accent) }
-  .hint{ color:var(--muted); font-size:14px; margin:0 }
+  /* PROGRESS BAR */
+  .progress{width:60%;max-width:420px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;}
+  .bar{height:100%;width:0;background:var(--accent);}
+  @media (prefers-color-scheme:dark){.progress{background:rgba(255,255,255,.18);}}
 
-  /* BOUTONS */
-  .cta{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin:12px 0 0 }
-  .btn{ display:inline-flex; align-items:center; justify-content:center; min-width:200px; padding:13px 18px; border-radius:14px;
-        font-weight:700; text-decoration:none; cursor:pointer; border:1px solid transparent; background:var(--brand); color:#fff;
-        box-shadow:0 8px 18px rgba(0,0,0,.08); transition: transform .14s ease, color .18s ease, box-shadow .18s ease; }
-  .btn:hover{ transform:scale(1.12); color:var(--accent); box-shadow:0 12px 26px rgba(0,0,0,.14) }
-  .btn:active{ transform:scale(0.985); box-shadow:0 6px 16px rgba(0,0,0,.12) }
+  /* HINT */
+  .hint{color:var(--muted);font-size:14px;margin-top:4px;}
+  
+  /* CTA BUTTONS */
+  .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-width:180px;padding:14px 16px;border-radius:12px;
+    background:var(--brand);color:#fff;text-decoration:none;font-weight:700;
+    transition:transform .15s ease,box-shadow .2s ease;
+    box-shadow:0 6px 14px rgba(0,0,0,.08);
+  }
+  .btn:hover{transform:scale(1.08);box-shadow:0 10px 22px rgba(0,0,0,.14);}
+  .btn:active{transform:scale(.97);}
+  
+  footer{text-align:center;color:var(--muted);padding:22px 0;font-size:14px;}
 
-  footer{ text-align:center; color:var(--muted); padding:22px 0 }
+  /* RESPONSIVE FIXES */
+  @media (max-width:480px){
+    .slide p{font-size:15px;}
+    .cta{flex-direction:column;gap:12px;}
+    .btn{width:100%;max-width:320px;}
+  }
 </style>
 </head>
+
 <body>
   <nav>
     <a href="index.html" aria-current="page">Accueil</a>
@@ -76,28 +104,25 @@
 
   <main>
     <section id="carousel" class="wrap" aria-roledescription="carousel" aria-live="polite">
-      <!-- Slide 1 -->
       <article class="slide show">
         <h2>Mon parcours</h2>
         <p>De la formation au recrutement tech international, j’ai développé une approche structurée et humaine, combinant expertise métier et curiosité culturelle.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Astuce : clic/tap pour avancer • balayez (←/→)</p>
+        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
 
-      <!-- Slide 2 -->
       <article class="slide">
         <h2>Ma vision</h2>
         <p>Recruter, c’est comprendre un besoin business, évaluer avec rigueur et construire une relation durable entre talents et entreprises.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Astuce : clic/tap pour avancer • balayez (←/→)</p>
+        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
 
-      <!-- Slide 3 -->
       <article class="slide">
         <h2>Et demain</h2>
         <p>Contribuer à des projets à fort impact dans la défense, la cybersécurité, le spatial et l’industrie 4.0 — avec exigence et passion.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Astuce : clic/tap pour avancer • balayez (←/→)</p>
+        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
     </section>
 
@@ -111,76 +136,38 @@
   <footer>© 2025 Grégory Sauteret</footer>
 
   <script>
-    // Carrousel : anime UNIQUEMENT la barre du slide courant
+    // Carrousel + swipe + vibration clic
     const slides = [...document.querySelectorAll('.slide')];
-    const wrap = document.getElementById('carousel');
-    let i = 0, t = null, paused = false;
-    const AUTO = 6000;
+    let i=0, t=null; const AUTO=6000;
+    const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('show',k===i));}
+    const bar=()=>slides[i].querySelector('.bar');
+    const play=()=>{clearTimeout(t);const b=bar();if(!b)return;
+      b.style.transition='none';b.style.width='0%';void b.offsetWidth;
+      b.style.transition=`width ${AUTO}ms linear`;b.style.width='100%';
+      t=setTimeout(()=>next(),AUTO);
+    };
+    const next=()=>{show(i+1);play();};const prev=()=>{show(i-1);play();};
 
-    const curSlide = () => slides[i];
-    const curBar = () => curSlide().querySelector('.bar');
-
-    function show(n){
-      i = (n + slides.length) % slides.length;
-      slides.forEach((el,k)=>el.classList.toggle('show', k===i));
-    }
-
-    function startProgress(ms=AUTO){
-      const bar = curBar();
-      if(!bar) return;
-      bar.style.transition='none';
-      bar.style.width='0%';
-      void bar.offsetWidth; // reflow
-      bar.style.transition = `width ${ms}ms linear`;
-      bar.style.width = '100%';
-    }
-
-    function play(ms=AUTO){
-      if(paused) return;
-      clearTimeout(t);
-      startProgress(ms);
-      t = setTimeout(()=>{ next(); }, ms);
-    }
-
-    function next(){ show(i+1); play(); }
-    function prev(){ show(i-1); play(); }
-
-    // Interactions
-    wrap.addEventListener('click', ()=> next());
-    let x0=null;
-    wrap.addEventListener('touchstart', e=>{ x0=e.changedTouches[0].clientX; }, {passive:true});
-    wrap.addEventListener('touchend', e=>{
-      if(x0===null) return;
-      const dx = e.changedTouches[0].clientX - x0; x0=null;
-      if(Math.abs(dx)>30){ (dx<0?next:prev)(); }
-    }, {passive:true});
-
-    document.addEventListener('keydown', e=>{
-      if(['ArrowRight','ArrowLeft',' '].includes(e.key) || e.code==='Space') e.preventDefault();
-      if(e.key==='ArrowRight') next();
-      else if(e.key==='ArrowLeft') prev();
-      else if(e.code==='Space' || e.key===' '){ paused=!paused; paused?clearTimeout(t):play(); }
+    const wrap=document.getElementById('carousel');
+    wrap.addEventListener('click',()=>{navigator.vibrate?.(20);next();});
+    let startX=null;
+    wrap.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+    wrap.addEventListener('touchend',e=>{
+      if(startX===null)return;
+      const dx=e.changedTouches[0].clientX-startX;
+      if(Math.abs(dx)>40){navigator.vibrate?.(25);dx<0?next():prev();}
+      startX=null;
+    },{passive:true});
+    document.addEventListener('keydown',e=>{
+      if(e.key==='ArrowRight')next();
+      if(e.key==='ArrowLeft')prev();
     });
 
-    // Init
-    show(0); play(AUTO);
+    show(0);play();
   </script>
 
-  <!-- Fallback si JS désactivé : on garde le contenu visible -->
   <noscript>
-    <style>.slide{position:static;opacity:1}.progress,.hint{display:none}.wrap{min-height:auto}</style>
+    <style>.slide{position:static;opacity:1}.bar,.progress,.hint{display:none}.wrap{min-height:auto}</style>
   </noscript>
-
-  <!-- Vibration haptique -->
-  <script>
-    (function(){
-      if(!("vibrate" in navigator)) return;
-      const buttons = document.querySelectorAll(".btn");
-      buttons.forEach(btn=>{
-        btn.addEventListener("mouseenter",()=>navigator.vibrate(18),{passive:true});
-        btn.addEventListener("click",()=>navigator.vibrate([12,18,12]),{passive:true});
-      });
-    })();
-  </script>
 </body>
 </html>
