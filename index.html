@@ -2,78 +2,95 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Grégory Sauteret – Recruteur Tech Global</title>
-<meta name="description" content="Recruteur tech global – sourcing international, entretiens structurés, secteurs défense, cybersécurité, spatial & industrie 4.0. Devise : Chercher. Contacter. Recruter. Objectif : CDI." />
+<meta name="description" content="Recruteur tech global – Chercher. Contacter. Recruter. Objectif : CDI. Curieux, adaptable, soif de réussite. Handicap = moteur d’adaptation et de solutions utiles au collectif." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 
 <style>
   :root{
     --bg:#f9fafb; --text:#0f172a; --muted:#475569;
-    --brand:#1e3a8a; --accent:#fbbf24;
+    --brand:#1e3a8a; --accent:#fbbf24; --brand-ink:#0f1c4d;
   }
   @media (prefers-color-scheme:dark){
-    :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--accent:#facc15;}
+    :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--brand-ink:#0b153a;--accent:#facc15;}
   }
-
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{height:100%}
-  body{
-    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
-    background:var(--bg);color:var(--text);line-height:1.6;
-    /* Limite le "pull-to-refresh" sur Android/Chrome */
-    overscroll-behavior-y: contain;
+  body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
+
+  /* ===== Layout 4 zones ===== */
+  .shell{
+    display:grid;min-height:100dvh;
+    grid-template-rows:auto 1fr auto; /* top (1+2), content (3), bottom links (4) */
   }
 
-  /* NAV mono-ligne défilable en très petit écran */
+  /* Zone 1+2 : bloc top fixe (menu + header) */
+  .top{
+    position:sticky;top:0;z-index:1000;
+    background:var(--brand);
+    box-shadow:0 2px 6px rgba(0,0,0,.15);
+  }
+
+  /* Zone 1 : menu centré */
   nav{
-    position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
-    background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
-    display:block;white-space:nowrap;overflow-x:auto;overflow-y:hidden;
+    height:56px;display:flex;align-items:center;justify-content:center;
+    gap:18px;padding:0 10px;
+    white-space:nowrap;overflow-x:auto;overflow-y:hidden;
     -webkit-overflow-scrolling:touch;scrollbar-width:none;
   }
   nav::-webkit-scrollbar{display:none}
   nav a{
-    display:inline-block;vertical-align:middle;
-    color:#fff;text-decoration:none;font-weight:600;
-    padding:0 14px;line-height:56px;font-size:15px;
-    position:relative;transition:color .3s;
+    color:#fff;text-decoration:none;font-weight:600;font-size:15px;
+    padding:0 6px;line-height:56px;position:relative;transition:color .25s ease;
   }
   nav a:hover,nav a[aria-current="page"]{color:var(--accent);}
   nav a::after{
     content:"";position:absolute;left:0;bottom:8px;height:2px;width:0;background:var(--accent);
-    transition:width .3s;
+    transition:width .25s ease;
   }
   nav a:hover::after,nav a[aria-current="page"]::after{width:100%;}
 
-  /* HEADER */
-  header{margin-top:56px;background:var(--brand);color:#fff;text-align:center;padding:26px 10px;}
-  header h1{font-size:clamp(24px,6vw,34px);}
-  header p{margin-top:4px;font-size:clamp(14px,3.5vw,17px);opacity:.95;}
+  /* Zone 2 : header */
+  header{color:#fff;text-align:center;padding:22px 14px 24px;background:linear-gradient(0deg,var(--brand),var(--brand-ink));}
+  header h1{font-size:clamp(24px,6vw,34px);font-weight:700}
+  header p{margin-top:6px;font-size:clamp(14px,3.6vw,17px);opacity:.95}
 
-  main{max-width:900px;margin:0 auto;padding:20px 16px;}
-
-  /* SLIDES */
-  .wrap{
-    position:relative;display:flex;justify-content:center;align-items:center;
-    overflow:hidden;min-height:48vh;touch-action:pan-x pan-y;
+  /* Zone 3 : contenu (carrousel MANUEL) */
+  main{max-width:980px;margin:0 auto;padding:18px 16px 12px;}
+  .carousel{
+    position:relative;min-height:46vh;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
   }
-  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .6s ease;padding:0 18px;}
+  .slide{position:absolute;inset:0;padding:0 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .5s ease;}
   .slide.show{opacity:1;}
-  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,30px);}
-  .slide p{max-width:760px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
-  .lead{font-weight:700}
+  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,28px);margin-bottom:6px;}
+  .slide p{max-width:760px;font-size:clamp(15px,4vw,18px);margin:6px 0;}
 
-  /* PROGRESS BAR */
-  .progress{width:60%;max-width:440px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px;}
-  .bar{height:100%;width:0;background:var(--accent);}
-  @media (prefers-color-scheme:dark){.progress{background:rgba(255,255,255,.18);}}
+  /* Contrôles manuels */
+  .controls{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none;
+  }
+  .ctrl{
+    pointer-events:auto;cursor:pointer;user-select:none;border:0;border-radius:12px;
+    background:rgba(0,0,0,.06);backdrop-filter:saturate(120%) blur(2px);
+    width:44px;height:44px;display:grid;place-items:center;
+    font-weight:700;color:var(--brand);
+    transition:transform .12s ease, background .2s ease;
+  }
+  .ctrl:hover{transform:scale(1.05);background:rgba(0,0,0,.1)}
+  .ctrl:active{transform:scale(.96)}
 
-  .hint{color:var(--muted);font-size:14px;margin-top:6px;}
-  .pause-msg{display:none;color:var(--accent);font-weight:600;font-size:14px;margin-top:6px;}
+  /* Indicateurs (points) */
+  .dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:8px;justify-content:center;}
+  .dot{width:8px;height:8px;border-radius:999px;background:#e5e7eb;opacity:.8;transition:transform .2s ease, background .2s ease;}
+  .dot.active{background:var(--accent);transform:scale(1.25)}
+  @media (prefers-color-scheme:dark){ .dot{background:rgba(255,255,255,.2);} }
 
-  /* CTA BUTTONS + fallback visuel si pas d’haptique */
-  .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px;}
+  /* Zone 4 : liens (CTA) */
+  .cta{
+    max-width:980px;margin:10px auto 22px;padding:0 16px;
+    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
+  }
   .btn{
     display:inline-flex;align-items:center;justify-content:center;
     min-width:180px;padding:14px 18px;border-radius:12px;
@@ -86,163 +103,139 @@
   .btn.pulse{animation:pulse .18s ease-out;}
   @keyframes pulse{0%{transform:scale(1)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
 
+  footer{text-align:center;color:var(--muted);padding:10px 0 22px;font-size:14px;}
+
+  /* Mobile : boutons plus petits (≈ /2 visuel) + menu défilable */
   @media (max-width:480px){
-    nav a{font-size:14px;padding:0 10px;}
+    .btn{min-width:140px;padding:12px 14px;font-size:14px;border-radius:10px;}
+    .ctrl{width:40px;height:40px;border-radius:10px;}
     .slide p{font-size:15px;}
-    .cta{flex-direction:column;gap:12px;}
-    .btn{width:100%;max-width:320px;}
   }
 </style>
 </head>
-
 <body>
-  <nav>
-    <a href="index.html" aria-current="page">Accueil</a>
-    <a href="cvinteractif.html">Mon CV</a>
-    <a href="references.html">Références</a>
-    <a href="contact.html">Contact</a>
-    <!-- Lien LinkedIn retiré -->
-  </nav>
+<div class="shell">
+  <!-- ZONE 1+2 : top fixe -->
+  <div class="top">
+    <nav aria-label="Navigation principale">
+      <a href="index.html" aria-current="page">Accueil</a>
+      <a href="cvinteractif.html">Mon CV</a>
+      <a href="references.html">Références</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <header>
+      <h1>Grégory Sauteret</h1>
+      <p>Senior Talent Acquisition Specialist — CDI recherché</p>
+    </header>
+  </div>
 
-  <header>
-    <h1>Grégory Sauteret</h1>
-    <p>Senior Talent Acquisition Specialist</p>
-  </header>
-
+  <!-- ZONE 3 : contenu -->
   <main>
-    <section id="carousel" class="wrap" aria-roledescription="carousel" aria-live="polite">
-      <article class="slide show">
+    <section class="carousel" id="carousel" aria-roledescription="carousel" aria-label="Parcours, Vision, Devise, Projet (navigation manuelle)">
+      <!-- Slides -->
+      <article class="slide show" data-i="0">
         <h2>Mon parcours</h2>
-        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. Ces expériences m’ont appris à identifier les bons leviers pour attirer, convaincre et fidéliser les talents, au-delà des seules compétences techniques.</p>
-        <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
+        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. J’ai appris à attirer, convaincre et fidéliser les talents, bien au-delà des seules compétences techniques.</p>
       </article>
 
-      <article class="slide">
+      <article class="slide" data-i="1">
         <h2>Ma vision</h2>
-        <p>Recruter n’est pas un acte administratif : c’est un engagement humain et stratégique. Comprendre les métiers, les équipes et les enjeux business permet de créer des rencontres qui font sens. Mon approche : écoute, exigence, transparence — des principes qui structurent chaque échange.</p>
-        <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
+        <p>Recruter est un engagement humain et stratégique. Comprendre les métiers, les équipes et les enjeux business permet de créer des rencontres qui font sens. Mon approche : écoute, exigence, transparence — et des échanges structurés pour décider vite et juste.</p>
       </article>
 
-      <article class="slide">
+      <article class="slide" data-i="2">
         <h2>Ma devise</h2>
-        <p>« Chercher. Contacter. Recruter. » Trois mots pour une méthode simple et efficace : la curiosité du chercheur, l’audace du contact et la rigueur du recruteur. Chaque mission est une enquête, chaque profil une histoire, chaque réussite une collaboration durable.</p>
-        <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
+        <p>« Chercher. Contacter. Recruter. » — la curiosité du chercheur, l’audace du contact et la rigueur du recruteur. Chaque mission est une enquête, chaque profil une histoire, chaque réussite une collaboration durable.</p>
       </article>
 
-      <article class="slide">
+      <article class="slide" data-i="3">
         <h2>Mon projet</h2>
-        <p>Après une expérience riche en recrutement international sur des technologies de pointe, dans des marchés tendus, je souhaite aujourd’hui rejoindre en CDI une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe.</p>
-        <p>Ma situation de handicap m’a <em>poussé</em> à m’adapter, à penser autrement et à transformer des fragilités individuelles en forces collectives.</p>
+        <p>Après une expérience riche en recrutement international sur des technologies de pointe, dans des marchés tendus, je souhaite aujourd’hui rejoindre en <span>CDI</span> une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe.</p>
+        <p>Ma situation de handicap m’a poussé à m’adapter, à penser autrement et à transformer des fragilités individuelles en forces collectives.</p>
         <p>Je cherche un nouveau challenge : je suis curieux, j’apprends de chaque expérience et j’ai soif de réussite.</p>
-        <p><span class="lead">Mon objectif :</span> contribuer concrètement à la croissance d’équipes qui innovent et avancent, avec exigence et sens du résultat.</p>
-        <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
+        <p><strong>Mon objectif :</strong> contribuer concrètement à la croissance d’équipes qui innovent et avancent, avec exigence et sens du résultat.</p>
       </article>
-    </section>
 
-    <div class="cta">
-      <a class="btn" href="cvinteractif.html">Voir mon CV interactif</a>
-      <a class="btn" href="references.html">Lire mes références</a>
-      <a class="btn" href="contact.html">Me contacter</a>
-    </div>
+      <!-- Contrôles -->
+      <div class="controls" aria-hidden="true">
+        <button class="ctrl" id="prev" aria-label="Slide précédent">‹</button>
+        <button class="ctrl" id="next" aria-label="Slide suivant">›</button>
+      </div>
+
+      <!-- Indicateurs -->
+      <div class="dots" role="tablist" aria-label="Progression">
+        <span class="dot active" data-to="0" role="tab" aria-selected="true"></span>
+        <span class="dot" data-to="1" role="tab"></span>
+        <span class="dot" data-to="2" role="tab"></span>
+        <span class="dot" data-to="3" role="tab"></span>
+      </div>
+    </section>
   </main>
 
+  <!-- ZONE 4 : liens (CTA) -->
+  <div class="cta" aria-label="Actions rapides">
+    <a class="btn" href="cvinteractif.html">Voir mon CV interactif</a>
+    <a class="btn" href="references.html">Lire mes références</a>
+    <a class="btn" href="contact.html">Me contacter</a>
+  </div>
+
   <footer>© 2025 Grégory Sauteret</footer>
+</div>
 
-  <script>
-    const slides = [...document.querySelectorAll('.slide')];
-    let i=0, timer=null, paused=false;
-    const AUTO=12000;
+<script>
+  // ===== Carrousel manuel (sans autoplay) + haptique =====
+  const slides = [...document.querySelectorAll('.slide')];
+  const dots = [...document.querySelectorAll('.dot')];
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let i = 0;
 
-    const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('show',k===i));};
-    const bar=()=>slides[i].querySelector('.bar');
-    const pauseMsg=()=>slides[i].querySelector('.pause-msg');
+  const supportsVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
+  const buzz = (p)=>{ try{ supportsVibrate && navigator.vibrate(p); }catch(e){} };
 
-    function start(ms=AUTO){
-      const b=bar(); if(!b) return;
-      b.style.transition='none'; b.style.width='0%';
-      void b.offsetWidth;
-      b.style.transition=`width ${ms}ms linear`;
-      b.style.width='100%';
-    }
-    function play(ms=AUTO){
-      clearTimeout(timer);
-      start(ms);
-      timer=setTimeout(()=>{next();},ms);
-    }
-    function stop(){
-      clearTimeout(timer);
-      const b=bar(); if(!b)return;
-      const w=getComputedStyle(b).width;
-      b.style.transition='none'; b.style.width=w;
-    }
-    const next=()=>{show(i+1);play();};
-    const prev=()=>{show(i-1);play();};
-
-    const supportsVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
-
-    const wrap=document.getElementById('carousel');
-
-    // Pause / reprise au clic
-    wrap.addEventListener('click',()=>{
-      paused=!paused;
-      const msg=pauseMsg();
-      if(paused){
-        if(supportsVibrate) navigator.vibrate(20);
-        msg.style.display='block';
-        stop();
-      } else {
-        if(supportsVibrate) navigator.vibrate([15,30]);
-        msg.style.display='none';
-        play();
-      }
+  function show(n){
+    i = (n + slides.length) % slides.length;
+    slides.forEach((s,k)=>s.classList.toggle('show', k===i));
+    dots.forEach((d,k)=>{
+      d.classList.toggle('active', k===i);
+      d.setAttribute('aria-selected', k===i ? 'true' : 'false');
     });
+  }
 
-    // Swipe gauche/droite
-    let startX=null, startY=null;
-    wrap.addEventListener('touchstart',e=>{
-      startX=e.touches[0].clientX;
-      startY=e.touches[0].clientY;
-      // petit retour haptique sur prise de focus tactile
-      if(supportsVibrate) navigator.vibrate(8);
-    },{passive:true});
+  function next(){ show(i+1); buzz(12); }
+  function prev(){ show(i-1); buzz(12); }
 
-    // Empêche le "pull-to-refresh" dans le carrousel sur iOS en cas de tirage vertical depuis le haut
-    wrap.addEventListener('touchmove',e=>{
-      const y=e.touches[0].clientY;
-      const dy=y - (startY ?? y);
-      const atTop = window.scrollY <= 0 || document.documentElement.scrollTop <= 0;
-      // si on tire vers le bas au sommet de la page, on bloque pour ne pas rafraîchir
-      if(dy > 10 && atTop){
-        e.preventDefault(); // nécessite {passive:false}
-      }
-    },{passive:false});
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+  prevBtn.addEventListener('touchstart', ()=>buzz(8), {passive:true});
+  nextBtn.addEventListener('touchstart', ()=>buzz(8), {passive:true});
 
-    wrap.addEventListener('touchend',e=>{
-      const dx=e.changedTouches[0].clientX - (startX ?? e.changedTouches[0].clientX);
-      if(Math.abs(dx)>40){
-        if(supportsVibrate) navigator.vibrate(30);
-        dx<0?next():prev();
-      }
-      startX=null; startY=null;
-    },{passive:true});
+  dots.forEach(d=>{
+    d.addEventListener('click', ()=>{ show(+d.dataset.to); buzz(8); });
+    d.addEventListener('touchstart', ()=>buzz(6), {passive:true});
+  });
 
-    // Feedback haptique/visuel sur les boutons
-    document.querySelectorAll('.btn').forEach(btn=>{
-      const pulseFallback = ()=>{ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); };
-      btn.addEventListener('touchstart',()=> supportsVibrate ? navigator.vibrate(10) : pulseFallback(), {passive:true});
-      btn.addEventListener('click',()=> supportsVibrate ? navigator.vibrate(18) : pulseFallback(), {passive:true});
-      btn.addEventListener('mouseenter',()=>{ if(supportsVibrate) navigator.vibrate(6); },{passive:true});
-    });
+  // Swipe
+  const wrap = document.getElementById('carousel');
+  let x0=null, y0=null;
+  wrap.addEventListener('touchstart', e=>{ x0=e.touches[0].clientX; y0=e.touches[0].clientY; }, {passive:true});
+  wrap.addEventListener('touchend', e=>{
+    if(x0==null){ return; }
+    const dx = e.changedTouches[0].clientX - x0;
+    const dy = e.changedTouches[0].clientY - y0;
+    if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){ dx<0 ? next() : prev(); }
+    x0=y0=null;
+  }, {passive:true});
 
-    show(0);play();
-  </script>
+  // Haptique / feedback sur boutons CTA
+  document.querySelectorAll('.btn').forEach(btn=>{
+    const pulseFallback = ()=>{ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); };
+    btn.addEventListener('touchstart',()=> supportsVibrate ? buzz(8) : pulseFallback(), {passive:true});
+    btn.addEventListener('click',()=> supportsVibrate ? buzz(16) : pulseFallback(), {passive:true});
+    btn.addEventListener('mouseenter',()=> buzz(4), {passive:true});
+  });
+
+  show(0);
+</script>
 </body>
 </html>
