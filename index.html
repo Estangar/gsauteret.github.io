@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Grégory Sauteret – Recruteur Tech Global</title>
-<meta name="description" content="Recruteur tech global – sourcing international, process d'entretien, secteurs défense, cybersécurité, spatial et industrie 4.0. Devise : Chercher. Contacter. Recruter." />
+<meta name="description" content="Recruteur tech global – sourcing international, entretiens structurés, secteurs défense, cybersécurité, spatial & industrie 4.0. Devise : Chercher. Contacter. Recruter. Objectif : CDI." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 
 <style>
@@ -22,16 +22,18 @@
     background:var(--bg);color:var(--text);line-height:1.6;
   }
 
-  /* NAVIGATION */
+  /* NAVIGATION — une seule ligne, défilable en très petit écran (pas de 2e ligne) */
   nav{
     position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
     background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
-    display:flex;align-items:center;justify-content:center;
-    flex-wrap:wrap;padding:0 8px;
+    display:block;white-space:nowrap;overflow-x:auto;overflow-y:hidden;
+    -webkit-overflow-scrolling:touch;scrollbar-width:none; /* Firefox */
   }
+  nav::-webkit-scrollbar{display:none} /* WebKit */
   nav a{
+    display:inline-block;vertical-align:middle;
     color:#fff;text-decoration:none;font-weight:600;
-    padding:0 12px;line-height:56px;font-size:15px;
+    padding:0 14px;line-height:56px;font-size:15px;
     position:relative;transition:color .3s;
   }
   nav a:hover,nav a[aria-current="page"]{color:var(--accent);}
@@ -53,18 +55,17 @@
   .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .6s ease;padding:0 18px;}
   .slide.show{opacity:1;}
   .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,30px);}
-  .slide p{max-width:720px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
+  .slide p{max-width:760px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
 
-  /* PROGRESS BAR */
-  .progress{width:60%;max-width:420px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px;}
+  /* PROGRESS BAR (plus proche du texte) */
+  .progress{width:60%;max-width:440px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px;}
   .bar{height:100%;width:0;background:var(--accent);}
   @media (prefers-color-scheme:dark){.progress{background:rgba(255,255,255,.18);}}
 
-  /* HINT */
   .hint{color:var(--muted);font-size:14px;margin-top:6px;}
   .pause-msg{display:none;color:var(--accent);font-weight:600;font-size:14px;margin-top:6px;}
 
-  /* CTA BUTTONS */
+  /* CTA BUTTONS (avec pulse visuel fallback) */
   .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px;}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;
@@ -73,14 +74,15 @@
     transition:transform .15s ease,box-shadow .2s ease,color .2s ease;
     box-shadow:0 6px 14px rgba(0,0,0,.08);
   }
-  .btn:hover{transform:scale(1.08);box-shadow:0 10px 22px rgba(0,0,0,.14);color:var(--accent);}
+  .btn:hover{transform:scale(1.1);box-shadow:0 10px 22px rgba(0,0,0,.14);color:var(--accent);}
   .btn:active{transform:scale(.97);}
-  
+  .btn.pulse{animation:pulse .18s ease-out;}
+  @keyframes pulse{0%{transform:scale(1)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
+
   footer{text-align:center;color:var(--muted);padding:22px 0;font-size:14px;}
 
-  /* RESPONSIVE FIXES */
   @media (max-width:480px){
-    nav a{font-size:14px;padding:0 8px;}
+    nav a{font-size:14px;padding:0 10px;}
     .slide p{font-size:15px;}
     .cta{flex-direction:column;gap:12px;}
     .btn{width:100%;max-width:320px;}
@@ -94,7 +96,7 @@
     <a href="cvinteractif.html">Mon CV</a>
     <a href="references.html">Références</a>
     <a href="contact.html">Contact</a>
-    <a href="https://www.linkedin.com/in/gsauteret/" target="_blank" rel="noopener">LinkedIn</a>
+    <!-- Lien LinkedIn retiré pour éviter tout débordement au-dessus du header -->
   </nav>
 
   <header>
@@ -106,41 +108,35 @@
     <section id="carousel" class="wrap" aria-roledescription="carousel" aria-live="polite">
       <article class="slide show">
         <h2>Mon parcours</h2>
-        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du prérecrutement d’alternants à la chasse de profils experts IT à l’international. 
-        Ces expériences m’ont appris à identifier les bons leviers pour attirer, convaincre et fidéliser les talents, au-delà des simples compétences techniques.</p>
+        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. Ces expériences m’ont appris à identifier les bons leviers pour attirer, convaincre et fidéliser les talents, au-delà des seules compétences techniques.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
+        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
         <h2>Ma vision</h2>
-        <p>Pour moi, recruter n’est pas un acte administratif : c’est un engagement humain et stratégique. 
-        J’aime comprendre les métiers, les équipes et les défis business pour créer des rencontres qui font sens. 
-        Mon approche : écoute, exigence, transparence. Trois valeurs qui nourrissent chaque échange.</p>
+        <p>Recruter n’est pas un acte administratif : c’est un engagement humain et stratégique. Comprendre les métiers, les équipes et les enjeux business permet de créer des rencontres qui font sens. Mon approche : écoute, exigence, transparence — des principes qui structurent chaque échange.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
+        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
         <h2>Ma devise</h2>
-        <p>« Chercher. Contacter. Recruter. »  
-        Trois mots qui résument ma méthode : la curiosité du chercheur, l’audace du contact et la rigueur du recruteur.  
-        Chaque mission est pour moi une enquête, chaque profil une histoire à comprendre, chaque réussite une collaboration durable.</p>
+        <p>« Chercher. Contacter. Recruter. » Trois mots pour une méthode simple et efficace : la curiosité du chercheur, l’audace du contact et la rigueur du recruteur. Chaque mission est une enquête, chaque profil une histoire, chaque réussite une collaboration durable.</p>
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
+        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
         <h2>Mon projet</h2>
-        <p>Après une expérience riche en recrutement international sur des technologies de pointe, j’ai appris à évoluer dans des environnements exigeants où les bons profils sont rares et très sollicités.  
-        Aujourd’hui, je souhaite rejoindre une entreprise ambitieuse, qui partage le goût du challenge et de la précision, et où je pourrai contribuer pleinement à des projets à fort impact.  
-        Mon objectif : accompagner durablement la croissance d’une équipe qui avance, innove et donne du sens au recrutement.</p>
+        <p>Après une expérience riche en recrutement international sur des technologies de pointe et dans des marchés tendus, je souhaite aujourd’hui rejoindre en <strong>CDI</strong> une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe. Ma <strong>situation de handicap</strong> m’a appris à m’adapter, à penser autrement et à trouver des solutions utiles au collectif. Mon objectif : contribuer concrètement à la croissance d’équipes qui innovent et qui avancent.</p>
+        <!-- Barre de progression bien présente sous ce slide -->
         <div class="progress"><div class="bar"></div></div>
-        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
-        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
+        <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
       </article>
     </section>
 
@@ -154,6 +150,7 @@
   <footer>© 2025 Grégory Sauteret</footer>
 
   <script>
+    // Carrousel + pause/reprise + swipe + haptique (avec fallback visuel)
     const slides = [...document.querySelectorAll('.slide')];
     let i=0, timer=null, paused=false;
     const AUTO=12000;
@@ -169,53 +166,62 @@
       b.style.transition=`width ${ms}ms linear`;
       b.style.width='100%';
     }
-
     function play(ms=AUTO){
       clearTimeout(timer);
       start(ms);
       timer=setTimeout(()=>{next();},ms);
     }
-
     function stop(){
       clearTimeout(timer);
       const b=bar(); if(!b)return;
       const w=getComputedStyle(b).width;
       b.style.transition='none'; b.style.width=w;
     }
-
     const next=()=>{show(i+1);play();};
     const prev=()=>{show(i-1);play();};
+
+    const supportsVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
 
     const wrap=document.getElementById('carousel');
     wrap.addEventListener('click',()=>{
       paused=!paused;
       const msg=pauseMsg();
       if(paused){
-        navigator.vibrate?.(20);
+        if(supportsVibrate) navigator.vibrate(20);
         msg.style.display='block';
         stop();
       } else {
-        navigator.vibrate?.([15,30]);
+        if(supportsVibrate) navigator.vibrate([15,30]);
         msg.style.display='none';
         play();
       }
     });
 
+    // Swipe
     let startX=null;
     wrap.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
     wrap.addEventListener('touchend',e=>{
       if(startX===null)return;
       const dx=e.changedTouches[0].clientX-startX;
-      if(Math.abs(dx)>40){navigator.vibrate?.(35);dx<0?next():prev();}
+      if(Math.abs(dx)>40){
+        if(supportsVibrate) navigator.vibrate(30);
+        dx<0?next():prev();
+      }
       startX=null;
     },{passive:true});
+
+    // Feedback visuel pour les boutons si pas d’haptique
+    document.querySelectorAll('.btn').forEach(btn=>{
+      btn.addEventListener('click',()=>{
+        if(supportsVibrate) navigator.vibrate(18);
+        else { btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); }
+      },{passive:true});
+      btn.addEventListener('mouseenter',()=>{
+        if(supportsVibrate) navigator.vibrate(8);
+      },{passive:true});
+    });
 
     show(0);play();
   </script>
 </body>
 </html>
-
-<!-- 📝 Commentaire GitHub -->
-# Correction affichage LinkedIn + nouveau contenu “Mon projet (demain)” :
-# Suppression bug visuel au-dessus du header et réécriture du slide final
-# Ton professionnel, orienté impact, sans pathos : “Chercher. Contacter. Recruter.” conservé.
