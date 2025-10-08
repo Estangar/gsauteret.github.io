@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 <title>Grégory Sauteret – Recruteur Tech Global</title>
-<meta name="description" content="Recruteur tech global – sourcing international, process d'entretien, secteurs défense, cybersécurité, spatial, industrie 4.0." />
+<meta name="description" content="Recruteur tech global – sourcing international, process d'entretien, secteurs défense, cybersécurité, spatial et industrie 4.0. Devise : Chercher. Contacter. Recruter." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
 
 <style>
@@ -22,18 +22,17 @@
     background:var(--bg);color:var(--text);line-height:1.6;
   }
 
-  /* NAVIGATION RESPONSIVE */
+  /* NAVIGATION ADAPTATIVE */
   nav{
     position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
     background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
-    display:flex;align-items:center;justify-content:center;overflow-x:auto;
-    scrollbar-width:none;-webkit-overflow-scrolling:touch;
+    display:flex;align-items:center;justify-content:center;
+    flex-wrap:wrap;padding:0 8px;
   }
-  nav::-webkit-scrollbar{display:none;}
   nav a{
     flex:0 0 auto;
     color:#fff;text-decoration:none;font-weight:600;
-    padding:0 14px;line-height:56px;font-size:15px;
+    padding:0 12px;line-height:56px;font-size:15px;
     position:relative;transition:color .3s;
   }
   nav a:hover,nav a[aria-current="page"]{color:var(--accent);}
@@ -44,43 +43,44 @@
   nav a:hover::after,nav a[aria-current="page"]::after{width:100%;}
 
   /* HEADER */
-  header{margin-top:56px;background:var(--brand);color:#fff;text-align:center;padding:24px 10px;}
+  header{margin-top:56px;background:var(--brand);color:#fff;text-align:center;padding:26px 10px;}
   header h1{font-size:clamp(24px,6vw,34px);}
   header p{margin-top:4px;font-size:clamp(14px,3.5vw,17px);opacity:.95;}
 
-  main{max-width:880px;margin:0 auto;padding:20px 16px;}
+  main{max-width:900px;margin:0 auto;padding:20px 16px;}
 
   /* SLIDES */
-  .wrap{position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:42vh;}
-  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .4s ease;padding:0 18px;}
+  .wrap{position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:48vh;}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .5s ease;padding:0 18px;}
   .slide.show{opacity:1;}
-  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,28px);}
-  .slide p{max-width:700px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
+  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,30px);}
+  .slide p{max-width:720px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
 
   /* PROGRESS BAR */
-  .progress{width:60%;max-width:420px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;}
+  .progress{width:60%;max-width:420px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px;}
   .bar{height:100%;width:0;background:var(--accent);}
   @media (prefers-color-scheme:dark){.progress{background:rgba(255,255,255,.18);}}
 
   /* HINT */
-  .hint{color:var(--muted);font-size:14px;margin-top:4px;}
+  .hint{color:var(--muted);font-size:14px;margin-top:6px;}
   
   /* CTA BUTTONS */
-  .cta{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:18px;}
+  .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px;}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;
-    min-width:180px;padding:14px 16px;border-radius:12px;
+    min-width:180px;padding:14px 18px;border-radius:12px;
     background:var(--brand);color:#fff;text-decoration:none;font-weight:700;
-    transition:transform .15s ease,box-shadow .2s ease;
+    transition:transform .15s ease,box-shadow .2s ease,color .2s ease;
     box-shadow:0 6px 14px rgba(0,0,0,.08);
   }
-  .btn:hover{transform:scale(1.08);box-shadow:0 10px 22px rgba(0,0,0,.14);}
+  .btn:hover{transform:scale(1.08);box-shadow:0 10px 22px rgba(0,0,0,.14);color:var(--accent);}
   .btn:active{transform:scale(.97);}
   
   footer{text-align:center;color:var(--muted);padding:22px 0;font-size:14px;}
 
   /* RESPONSIVE FIXES */
   @media (max-width:480px){
+    nav a{font-size:14px;padding:0 8px;}
     .slide p{font-size:15px;}
     .cta{flex-direction:column;gap:12px;}
     .btn{width:100%;max-width:320px;}
@@ -106,21 +106,35 @@
     <section id="carousel" class="wrap" aria-roledescription="carousel" aria-live="polite">
       <article class="slide show">
         <h2>Mon parcours</h2>
-        <p>De la formation au recrutement tech international, j’ai développé une approche structurée et humaine, combinant expertise métier et curiosité culturelle.</p>
+        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du prérecrutement d’alternants à la chasse de profils experts IT à l’international. 
+        Ces expériences m’ont appris à identifier les bons leviers pour attirer, convaincre et fidéliser les talents, au-delà des simples compétences techniques.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
 
       <article class="slide">
         <h2>Ma vision</h2>
-        <p>Recruter, c’est comprendre un besoin business, évaluer avec rigueur et construire une relation durable entre talents et entreprises.</p>
+        <p>Pour moi, recruter n’est pas un acte administratif : c’est un engagement humain et stratégique. 
+        J’aime comprendre les métiers, les équipes et les défis business pour créer des rencontres qui font sens. 
+        Mon approche : écoute, exigence, transparence. Trois valeurs qui nourrissent chaque échange.</p>
+        <div class="progress"><div class="bar"></div></div>
+        <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
+      </article>
+
+      <article class="slide">
+        <h2>Ma devise</h2>
+        <p>« Chercher. Contacter. Recruter. »  
+        Trois mots qui résument ma méthode : la curiosité du chercheur, l’audace du contact et la rigueur du recruteur.  
+        Chaque mission est pour moi une enquête, chaque profil une histoire à comprendre, chaque réussite une collaboration durable.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
 
       <article class="slide">
         <h2>Et demain</h2>
-        <p>Contribuer à des projets à fort impact dans la défense, la cybersécurité, le spatial et l’industrie 4.0 — avec exigence et passion.</p>
+        <p>Mon objectif : continuer à évoluer dans des environnements à fort impact — défense, cybersécurité, spatial, industrie 4.0 — 
+        où les talents sont les premiers vecteurs d’innovation. 
+        J’avance avec passion, précision et envie de bâtir des équipes solides pour demain.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
       </article>
@@ -138,7 +152,7 @@
   <script>
     // Carrousel + swipe + vibration clic
     const slides = [...document.querySelectorAll('.slide')];
-    let i=0, t=null; const AUTO=6000;
+    let i=0, t=null; const AUTO=6500;
     const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('show',k===i));}
     const bar=()=>slides[i].querySelector('.bar');
     const play=()=>{clearTimeout(t);const b=bar();if(!b)return;
@@ -149,13 +163,13 @@
     const next=()=>{show(i+1);play();};const prev=()=>{show(i-1);play();};
 
     const wrap=document.getElementById('carousel');
-    wrap.addEventListener('click',()=>{navigator.vibrate?.(20);next();});
+    wrap.addEventListener('click',()=>{navigator.vibrate?.(25);next();});
     let startX=null;
     wrap.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
     wrap.addEventListener('touchend',e=>{
       if(startX===null)return;
       const dx=e.changedTouches[0].clientX-startX;
-      if(Math.abs(dx)>40){navigator.vibrate?.(25);dx<0?next():prev();}
+      if(Math.abs(dx)>40){navigator.vibrate?.(35);dx<0?next():prev();}
       startX=null;
     },{passive:true});
     document.addEventListener('keydown',e=>{
