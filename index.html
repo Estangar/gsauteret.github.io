@@ -22,7 +22,7 @@
     background:var(--bg);color:var(--text);line-height:1.6;
   }
 
-  /* NAVIGATION ADAPTATIVE */
+  /* NAVIGATION */
   nav{
     position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
     background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
@@ -30,7 +30,6 @@
     flex-wrap:wrap;padding:0 8px;
   }
   nav a{
-    flex:0 0 auto;
     color:#fff;text-decoration:none;font-weight:600;
     padding:0 12px;line-height:56px;font-size:15px;
     position:relative;transition:color .3s;
@@ -51,7 +50,7 @@
 
   /* SLIDES */
   .wrap{position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:48vh;}
-  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .5s ease;padding:0 18px;}
+  .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .6s ease;padding:0 18px;}
   .slide.show{opacity:1;}
   .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,30px);}
   .slide p{max-width:720px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
@@ -63,7 +62,10 @@
 
   /* HINT */
   .hint{color:var(--muted);font-size:14px;margin-top:6px;}
-  
+  .pause-msg{
+    display:none;color:var(--accent);font-weight:600;font-size:14px;margin-top:6px;
+  }
+
   /* CTA BUTTONS */
   .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px;}
   .btn{
@@ -110,6 +112,7 @@
         Ces expériences m’ont appris à identifier les bons leviers pour attirer, convaincre et fidéliser les talents, au-delà des simples compétences techniques.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
@@ -119,6 +122,7 @@
         Mon approche : écoute, exigence, transparence. Trois valeurs qui nourrissent chaque échange.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
@@ -128,6 +132,7 @@
         Chaque mission est pour moi une enquête, chaque profil une histoire à comprendre, chaque réussite une collaboration durable.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
       </article>
 
       <article class="slide">
@@ -137,6 +142,7 @@
         J’avance avec passion, précision et envie de bâtir des équipes solides pour demain.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez ou balayez pour avancer ↔︎</p>
+        <p class="pause-msg">Lecture en pause... cliquez pour reprendre</p>
       </article>
     </section>
 
@@ -150,20 +156,53 @@
   <footer>© 2025 Grégory Sauteret</footer>
 
   <script>
-    // Carrousel + swipe + vibration clic
     const slides = [...document.querySelectorAll('.slide')];
-    let i=0, t=null; const AUTO=6500;
-    const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('show',k===i));}
+    let i=0, timer=null, paused=false;
+    const AUTO=12000;
+
+    const show=n=>{i=(n+slides.length)%slides.length;slides.forEach((s,k)=>s.classList.toggle('show',k===i));};
     const bar=()=>slides[i].querySelector('.bar');
-    const play=()=>{clearTimeout(t);const b=bar();if(!b)return;
-      b.style.transition='none';b.style.width='0%';void b.offsetWidth;
-      b.style.transition=`width ${AUTO}ms linear`;b.style.width='100%';
-      t=setTimeout(()=>next(),AUTO);
-    };
-    const next=()=>{show(i+1);play();};const prev=()=>{show(i-1);play();};
+    const pauseMsg=()=>slides[i].querySelector('.pause-msg');
+
+    function start(ms=AUTO){
+      const b=bar(); if(!b) return;
+      b.style.transition='none'; b.style.width='0%';
+      void b.offsetWidth;
+      b.style.transition=`width ${ms}ms linear`;
+      b.style.width='100%';
+    }
+
+    function play(ms=AUTO){
+      clearTimeout(timer);
+      start(ms);
+      timer=setTimeout(()=>{next();},ms);
+    }
+
+    function stop(){
+      clearTimeout(timer);
+      const b=bar(); if(!b)return;
+      const w=getComputedStyle(b).width;
+      b.style.transition='none'; b.style.width=w;
+    }
+
+    const next=()=>{show(i+1);play();};
+    const prev=()=>{show(i-1);play();};
 
     const wrap=document.getElementById('carousel');
-    wrap.addEventListener('click',()=>{navigator.vibrate?.(25);next();});
+    wrap.addEventListener('click',()=>{
+      paused=!paused;
+      const msg=pauseMsg();
+      if(paused){
+        navigator.vibrate?.(20);
+        msg.style.display='block';
+        stop();
+      } else {
+        navigator.vibrate?.([15,30]);
+        msg.style.display='none';
+        play();
+      }
+    });
+
     let startX=null;
     wrap.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
     wrap.addEventListener('touchend',e=>{
@@ -172,16 +211,8 @@
       if(Math.abs(dx)>40){navigator.vibrate?.(35);dx<0?next():prev();}
       startX=null;
     },{passive:true});
-    document.addEventListener('keydown',e=>{
-      if(e.key==='ArrowRight')next();
-      if(e.key==='ArrowLeft')prev();
-    });
 
     show(0);play();
   </script>
-
-  <noscript>
-    <style>.slide{position:static;opacity:1}.bar,.progress,.hint{display:none}.wrap{min-height:auto}</style>
-  </noscript>
 </body>
 </html>
