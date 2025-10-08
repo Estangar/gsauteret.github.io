@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="fr">
+<html lang="fr" class="no-js">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Grégory Sauteret – Recruteur Tech Global</title>
 <meta name="description" content="Recruteur tech global – Chercher. Contacter. Recruter. Objectif : CDI. Curieux, adaptable, soif de réussite. Handicap = moteur d’adaptation et de solutions utiles au collectif." />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
@@ -10,188 +10,235 @@
 <style>
   :root{
     --bg:#f9fafb; --text:#0f172a; --muted:#475569;
-    --brand:#1e3a8a; --accent:#fbbf24; --brand-ink:#0f1c4d;
+    --brand:#1e3a8a; --brand-ink:#0f1c4d; --accent:#fbbf24;
+    --glass: rgba(255,255,255,.08);
   }
   @media (prefers-color-scheme:dark){
-    :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--brand-ink:#0b153a;--accent:#facc15;}
+    :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--brand-ink:#0b153a;--accent:#facc15; --glass: rgba(0,0,0,.25);}
   }
   *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
   body{font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;}
 
-  /* ===== Layout 4 zones ===== */
-  .shell{
-    display:grid;min-height:100dvh;
-    grid-template-rows:auto 1fr auto; /* top (1+2), content (3), bottom links (4) */
-  }
-
-  /* Zone 1+2 : bloc top fixe (menu + header) */
+  /* ===== En-tête (dégradé) ===== */
   .top{
-    position:sticky;top:0;z-index:1000;
-    background:var(--brand);
+    position:sticky; top:0; z-index:1000;
+    background:linear-gradient(0deg,var(--brand),var(--brand-ink));
+    color:#fff;
     box-shadow:0 2px 6px rgba(0,0,0,.15);
   }
-
-  /* Zone 1 : menu centré */
-  nav{
-    height:56px;display:flex;align-items:center;justify-content:center;
-    gap:18px;padding:0 10px;
-    white-space:nowrap;overflow-x:auto;overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none;
-  }
-  nav::-webkit-scrollbar{display:none}
-  nav a{
-    color:#fff;text-decoration:none;font-weight:600;font-size:15px;
-    padding:0 6px;line-height:56px;position:relative;transition:color .25s ease;
-  }
-  nav a:hover,nav a[aria-current="page"]{color:var(--accent);}
-  nav a::after{
-    content:"";position:absolute;left:0;bottom:8px;height:2px;width:0;background:var(--accent);
-    transition:width .25s ease;
-  }
-  nav a:hover::after,nav a[aria-current="page"]::after{width:100%;}
-
-  /* Zone 2 : header */
-  header{color:#fff;text-align:center;padding:22px 14px 24px;background:linear-gradient(0deg,var(--brand),var(--brand-ink));}
+  header{padding:22px 16px 26px; text-align:center;}
   header h1{font-size:clamp(24px,6vw,34px);font-weight:700}
   header p{margin-top:6px;font-size:clamp(14px,3.6vw,17px);opacity:.95}
 
-  /* Zone 3 : contenu (carrousel MANUEL) */
-  main{max-width:980px;margin:0 auto;padding:18px 16px 12px;}
-  .carousel{
-    position:relative;min-height:46vh;border-radius:14px;
-    display:flex;align-items:center;justify-content:center;overflow:hidden;
+  /* ===== Menu hamburger flottant ===== */
+  .hamburger{
+    position:absolute; top:10px; right:10px; z-index:1100;
+    width:46px; height:46px; border-radius:50%;
+    display:grid; place-items:center; cursor:pointer; border:none;
+    background:var(--glass); color:#fff; backdrop-filter:saturate(130%) blur(6px);
+    box-shadow:0 6px 14px rgba(0,0,0,.18);
+    transition:transform .12s ease, background .2s;
   }
-  .slide{position:absolute;inset:0;padding:0 22px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;opacity:0;transition:opacity .5s ease;}
-  .slide.show{opacity:1;}
-  .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,28px);margin-bottom:6px;}
-  .slide p{max-width:760px;font-size:clamp(15px,4vw,18px);margin:6px 0;}
+  .hamburger:hover{ transform:scale(1.06); }
+  .hamburger:active{ transform:scale(.96); }
+  .hamburger .bars{ width:20px; height:2px; background:#fff; position:relative; }
+  .hamburger .bars::before,.hamburger .bars::after{
+    content:""; position:absolute; left:0; width:100%; height:2px; background:#fff; transition:transform .2s ease, top .2s ease, opacity .2s ease;
+  }
+  .hamburger .bars::before{ top:-6px; }
+  .hamburger .bars::after{ top:6px; }
+  .hamburger.open .bars{ background:transparent; }
+  .hamburger.open .bars::before{ top:0; transform:rotate(45deg); }
+  .hamburger.open .bars::after{ top:0; transform:rotate(-45deg); }
 
-  /* Contrôles manuels */
-  .controls{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between;pointer-events:none;
+  /* Panneau du menu */
+  .nav-panel{
+    position:fixed; inset:0 0 0 auto; width:min(320px,80vw); z-index:1090;
+    background:linear-gradient(0deg,var(--brand-ink),var(--brand));
+    color:#fff; transform:translateX(100%); transition:transform .22s ease;
+    box-shadow:-10px 0 24px rgba(0,0,0,.25);
+    display:flex; flex-direction:column; padding:18px;
   }
+  .nav-panel.open{ transform:translateX(0); }
+  .nav-panel h3{margin:6px 0 10px; font-size:18px; opacity:.9;}
+  .nav-links{display:flex; flex-direction:column; gap:8px; margin-top:6px;}
+  .nav-links a{
+    color:#fff; text-decoration:none; font-weight:600; padding:10px 12px; border-radius:10px;
+    background:transparent; transition:background .2s ease, color .2s ease;
+  }
+  .nav-links a:hover{ background:rgba(255,255,255,.1); color:var(--accent); }
+  .nav-mask{
+    position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter:blur(1px);
+    z-index:1080; opacity:0; pointer-events:none; transition:opacity .2s ease;
+  }
+  .nav-mask.show{ opacity:1; pointer-events:auto; }
+
+  /* ===== Contenu (carrousel manuel) ===== */
+  main{max-width:980px; margin:0 auto; padding:18px 16px 12px;}
+  .carousel{
+    position:relative; min-height:46vh; border-radius:14px; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+    background:transparent;
+  }
+  .slide{
+    position:absolute; inset:0; padding:0 22px;
+    display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
+    opacity:0; transition:opacity .4s ease;
+  }
+  .slide.show{ opacity:1; }
+  .no-js .slide{ position:static; opacity:1; padding:12px 0; }
+
+  .slide h2{ color:var(--brand); font-size:clamp(20px,4.8vw,28px); margin-bottom:6px; }
+  .slide p{ max-width:760px; font-size:clamp(15px,4vw,18px); margin:6px 0; }
+
+  .controls{ position:absolute; inset:0; display:flex; align-items:center; justify-content:space-between; pointer-events:none; }
   .ctrl{
-    pointer-events:auto;cursor:pointer;user-select:none;border:0;border-radius:12px;
-    background:rgba(0,0,0,.06);backdrop-filter:saturate(120%) blur(2px);
-    width:44px;height:44px;display:grid;place-items:center;
-    font-weight:700;color:var(--brand);
+    pointer-events:auto; cursor:pointer; user-select:none; border:0; border-radius:12px;
+    background:rgba(0,0,0,.06); backdrop-filter:saturate(120%) blur(2px);
+    width:44px; height:44px; display:grid; place-items:center; font-weight:700; color:var(--brand);
     transition:transform .12s ease, background .2s ease;
   }
-  .ctrl:hover{transform:scale(1.05);background:rgba(0,0,0,.1)}
-  .ctrl:active{transform:scale(.96)}
+  .ctrl:hover{ transform:scale(1.05); background:rgba(0,0,0,.1) }
+  .ctrl:active{ transform:scale(.96) }
 
-  /* Indicateurs (points) */
-  .dots{position:absolute;left:0;right:0;bottom:10px;display:flex;gap:8px;justify-content:center;}
-  .dot{width:8px;height:8px;border-radius:999px;background:#e5e7eb;opacity:.8;transition:transform .2s ease, background .2s ease;}
-  .dot.active{background:var(--accent);transform:scale(1.25)}
-  @media (prefers-color-scheme:dark){ .dot{background:rgba(255,255,255,.2);} }
+  .dots{ position:absolute; left:0; right:0; bottom:10px; display:flex; gap:8px; justify-content:center; }
+  .dot{ width:8px; height:8px; border-radius:999px; background:#e5e7eb; opacity:.85; transition:transform .2s ease, background .2s ease; }
+  .dot.active{ background:var(--accent); transform:scale(1.25) }
+  @media (prefers-color-scheme:dark){ .dot{ background:rgba(255,255,255,.25); } }
 
-  /* Zone 4 : liens (CTA) */
-  .cta{
-    max-width:980px;margin:10px auto 22px;padding:0 16px;
-    display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
-  }
+  /* ===== Liens / CTA ===== */
+  .cta{ max-width:980px; margin:10px auto 22px; padding:0 16px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
   .btn{
-    display:inline-flex;align-items:center;justify-content:center;
-    min-width:180px;padding:14px 18px;border-radius:12px;
-    background:var(--brand);color:#fff;text-decoration:none;font-weight:700;
-    transition:transform .15s ease,box-shadow .2s ease,color .2s ease;
+    display:inline-flex; align-items:center; justify-content:center;
+    min-width:180px; padding:14px 18px; border-radius:12px;
+    background:var(--brand); color:#fff; text-decoration:none; font-weight:700;
+    transition:transform .15s ease, box-shadow .2s ease, color .2s ease;
     box-shadow:0 6px 14px rgba(0,0,0,.08);
   }
-  .btn:hover{transform:scale(1.1);box-shadow:0 10px 22px rgba(0,0,0,.14);color:var(--accent);}
-  .btn:active{transform:scale(.97);}
-  .btn.pulse{animation:pulse .18s ease-out;}
-  @keyframes pulse{0%{transform:scale(1)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
+  .btn:hover{ transform:scale(1.1); box-shadow:0 10px 22px rgba(0,0,0,.14); color:var(--accent); }
+  .btn:active{ transform:scale(.97); }
+  .btn.pulse{ animation:pulse .18s ease-out; }
+  @keyframes pulse{ 0%{transform:scale(1)} 70%{transform:scale(1.07)} 100%{transform:scale(1)} }
 
-  footer{text-align:center;color:var(--muted);padding:10px 0 22px;font-size:14px;}
+  footer{ text-align:center; color:var(--muted); padding:10px 0 22px; font-size:14px; }
 
-  /* Mobile : boutons plus petits (≈ /2 visuel) + menu défilable */
+  /* Mobile : CTA plus petits */
   @media (max-width:480px){
-    .btn{min-width:140px;padding:12px 14px;font-size:14px;border-radius:10px;}
-    .ctrl{width:40px;height:40px;border-radius:10px;}
-    .slide p{font-size:15px;}
+    .btn{ min-width:140px; padding:12px 14px; font-size:14px; border-radius:10px; }
+    .ctrl{ width:40px; height:40px; border-radius:10px; }
+    .slide p{ font-size:15px; }
   }
 </style>
 </head>
 <body>
-<div class="shell">
-  <!-- ZONE 1+2 : top fixe -->
-  <div class="top">
-    <nav aria-label="Navigation principale">
-      <a href="index.html" aria-current="page">Accueil</a>
-      <a href="cvinteractif.html">Mon CV</a>
-      <a href="references.html">Références</a>
-      <a href="contact.html">Contact</a>
-    </nav>
-    <header>
-      <h1>Grégory Sauteret</h1>
-      <p>Senior Talent Acquisition Specialist — CDI recherché</p>
-    </header>
-  </div>
-
-  <!-- ZONE 3 : contenu -->
-  <main>
-    <section class="carousel" id="carousel" aria-roledescription="carousel" aria-label="Parcours, Vision, Devise, Projet (navigation manuelle)">
-      <!-- Slides -->
-      <article class="slide show" data-i="0">
-        <h2>Mon parcours</h2>
-        <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. J’ai appris à attirer, convaincre et fidéliser les talents, bien au-delà des seules compétences techniques.</p>
-      </article>
-
-      <article class="slide" data-i="1">
-        <h2>Ma vision</h2>
-        <p>Recruter est un engagement humain et stratégique. Comprendre les métiers, les équipes et les enjeux business permet de créer des rencontres qui font sens. Mon approche : écoute, exigence, transparence — et des échanges structurés pour décider vite et juste.</p>
-      </article>
-
-      <article class="slide" data-i="2">
-        <h2>Ma devise</h2>
-        <p>« Chercher. Contacter. Recruter. » — la curiosité du chercheur, l’audace du contact et la rigueur du recruteur. Chaque mission est une enquête, chaque profil une histoire, chaque réussite une collaboration durable.</p>
-      </article>
-
-      <article class="slide" data-i="3">
-        <h2>Mon projet</h2>
-        <p>Après une expérience riche en recrutement international sur des technologies de pointe, dans des marchés tendus, je souhaite aujourd’hui rejoindre en <span>CDI</span> une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe.</p>
-        <p>Ma situation de handicap m’a poussé à m’adapter, à penser autrement et à transformer des fragilités individuelles en forces collectives.</p>
-        <p>Je cherche un nouveau challenge : je suis curieux, j’apprends de chaque expérience et j’ai soif de réussite.</p>
-        <p><strong>Mon objectif :</strong> contribuer concrètement à la croissance d’équipes qui innovent et avancent, avec exigence et sens du résultat.</p>
-      </article>
-
-      <!-- Contrôles -->
-      <div class="controls" aria-hidden="true">
-        <button class="ctrl" id="prev" aria-label="Slide précédent">‹</button>
-        <button class="ctrl" id="next" aria-label="Slide suivant">›</button>
-      </div>
-
-      <!-- Indicateurs -->
-      <div class="dots" role="tablist" aria-label="Progression">
-        <span class="dot active" data-to="0" role="tab" aria-selected="true"></span>
-        <span class="dot" data-to="1" role="tab"></span>
-        <span class="dot" data-to="2" role="tab"></span>
-        <span class="dot" data-to="3" role="tab"></span>
-      </div>
-    </section>
-  </main>
-
-  <!-- ZONE 4 : liens (CTA) -->
-  <div class="cta" aria-label="Actions rapides">
-    <a class="btn" href="cvinteractif.html">Voir mon CV interactif</a>
-    <a class="btn" href="references.html">Lire mes références</a>
-    <a class="btn" href="contact.html">Me contacter</a>
-  </div>
-
-  <footer>© 2025 Grégory Sauteret</footer>
+<div class="top">
+  <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu"><span class="bars"></span></button>
+  <header>
+    <h1>Grégory Sauteret</h1>
+    <p>Senior Talent Acquisition Specialist — CDI recherché</p>
+  </header>
 </div>
 
+<!-- Panneau & masque -->
+<aside class="nav-panel" id="navPanel" aria-hidden="true">
+  <h3>Navigation</h3>
+  <nav class="nav-links" aria-label="Navigation principale">
+    <a href="index.html" aria-current="page">Accueil</a>
+    <a href="cvinteractif.html">Mon CV</a>
+    <a href="references.html">Références</a>
+    <a href="contact.html">Contact</a>
+  </nav>
+</aside>
+<div class="nav-mask" id="navMask"></div>
+
+<main>
+  <section class="carousel" id="carousel" aria-roledescription="carousel" aria-label="Parcours, Vision, Devise, Projet (navigation manuelle)">
+    <article class="slide show" data-i="0">
+      <h2>Mon parcours</h2>
+      <p>Curieux de nature, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. J’ai appris à attirer, convaincre et fidéliser les talents, au-delà des seules compétences techniques.</p>
+    </article>
+
+    <article class="slide" data-i="1">
+      <h2>Ma vision</h2>
+      <p>Recruter est un engagement humain et stratégique. Comprendre les métiers, les équipes et les enjeux business permet de créer des rencontres qui font sens. Mon approche : écoute, exigence, transparence — et des échanges structurés pour décider vite et juste.</p>
+    </article>
+
+    <article class="slide" data-i="2">
+      <h2>Ma devise</h2>
+      <p>« Chercher. Contacter. Recruter. » — la curiosité du chercheur, l’audace du contact et la rigueur du recruteur. Chaque mission est une enquête, chaque profil une histoire, chaque réussite une collaboration durable.</p>
+    </article>
+
+    <article class="slide" data-i="3">
+      <h2>Mon projet</h2>
+      <p>Après une expérience riche en recrutement international sur des technologies de pointe, dans des marchés tendus, je souhaite aujourd’hui rejoindre en <span>CDI</span> une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe.</p>
+      <p>Ma situation de handicap m’a poussé à m’adapter, à penser autrement et à transformer des fragilités individuelles en forces collectives.</p>
+      <p>Je cherche un nouveau challenge : je suis curieux, j’apprends de chaque expérience et j’ai soif de réussite.</p>
+      <p><strong>Mon objectif :</strong> contribuer concrètement à la croissance d’équipes qui innovent et avancent, avec exigence et sens du résultat.</p>
+    </article>
+
+    <div class="controls" aria-hidden="true">
+      <button class="ctrl" id="prev" aria-label="Slide précédent">‹</button>
+      <button class="ctrl" id="next" aria-label="Slide suivant">›</button>
+    </div>
+
+    <div class="dots" role="tablist" aria-label="Progression">
+      <span class="dot active" data-to="0" role="tab" aria-selected="true"></span>
+      <span class="dot" data-to="1" role="tab"></span>
+      <span class="dot" data-to="2" role="tab"></span>
+      <span class="dot" data-to="3" role="tab"></span>
+    </div>
+  </section>
+</main>
+
+<div class="cta" aria-label="Actions rapides">
+  <a class="btn" href="cvinteractif.html">Voir mon CV interactif</a>
+  <a class="btn" href="references.html">Lire mes références</a>
+  <a class="btn" href="contact.html">Me contacter</a>
+</div>
+
+<footer>© 2025 Grégory Sauteret</footer>
+
+<noscript>
+  <style>.no-js .slide{position:static;opacity:1}</style>
+  <div style="text-align:center;color:#a00;padding:10px">Astuce : activez JavaScript pour profiter de la navigation gestuelle.</div>
+</noscript>
+
 <script>
-  // ===== Carrousel manuel (sans autoplay) + haptique =====
+  // activer stylage non-JS → JS
+  document.documentElement.classList.remove('no-js');
+
+  // Menu hamburger
+  const ham = document.getElementById('hamburger');
+  const panel = document.getElementById('navPanel');
+  const mask = document.getElementById('navMask');
+
+  function openNav(){
+    ham.classList.add('open');
+    panel.classList.add('open');
+    panel.setAttribute('aria-hidden','false');
+    mask.classList.add('show');
+  }
+  function closeNav(){
+    ham.classList.remove('open');
+    panel.classList.remove('open');
+    panel.setAttribute('aria-hidden','true');
+    mask.classList.remove('show');
+  }
+  ham.addEventListener('click', ()=>{
+    const opened = panel.classList.contains('open');
+    opened ? closeNav() : openNav();
+    // haptique léger
+    if('vibrate' in navigator) navigator.vibrate(10);
+  });
+  mask.addEventListener('click', closeNav);
+
+  // Carrousel manuel
   const slides = [...document.querySelectorAll('.slide')];
   const dots = [...document.querySelectorAll('.dot')];
   const prevBtn = document.getElementById('prev');
   const nextBtn = document.getElementById('next');
   let i = 0;
-
-  const supportsVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
-  const buzz = (p)=>{ try{ supportsVibrate && navigator.vibrate(p); }catch(e){} };
 
   function show(n){
     i = (n + slides.length) % slides.length;
@@ -201,18 +248,14 @@
       d.setAttribute('aria-selected', k===i ? 'true' : 'false');
     });
   }
-
-  function next(){ show(i+1); buzz(12); }
-  function prev(){ show(i-1); buzz(12); }
+  function next(){ show(i+1); if('vibrate' in navigator) navigator.vibrate(12); }
+  function prev(){ show(i-1); if('vibrate' in navigator) navigator.vibrate(12); }
 
   prevBtn.addEventListener('click', prev);
   nextBtn.addEventListener('click', next);
-  prevBtn.addEventListener('touchstart', ()=>buzz(8), {passive:true});
-  nextBtn.addEventListener('touchstart', ()=>buzz(8), {passive:true});
 
   dots.forEach(d=>{
-    d.addEventListener('click', ()=>{ show(+d.dataset.to); buzz(8); });
-    d.addEventListener('touchstart', ()=>buzz(6), {passive:true});
+    d.addEventListener('click', ()=>{ show(+d.dataset.to); if('vibrate' in navigator) navigator.vibrate(8); });
   });
 
   // Swipe
@@ -220,19 +263,19 @@
   let x0=null, y0=null;
   wrap.addEventListener('touchstart', e=>{ x0=e.touches[0].clientX; y0=e.touches[0].clientY; }, {passive:true});
   wrap.addEventListener('touchend', e=>{
-    if(x0==null){ return; }
+    if(x0==null) return;
     const dx = e.changedTouches[0].clientX - x0;
     const dy = e.changedTouches[0].clientY - y0;
     if(Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)){ dx<0 ? next() : prev(); }
     x0=y0=null;
   }, {passive:true});
 
-  // Haptique / feedback sur boutons CTA
+  // Haptique sur CTA
   document.querySelectorAll('.btn').forEach(btn=>{
     const pulseFallback = ()=>{ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); };
-    btn.addEventListener('touchstart',()=> supportsVibrate ? buzz(8) : pulseFallback(), {passive:true});
-    btn.addEventListener('click',()=> supportsVibrate ? buzz(16) : pulseFallback(), {passive:true});
-    btn.addEventListener('mouseenter',()=> buzz(4), {passive:true});
+    btn.addEventListener('touchstart',()=> ('vibrate' in navigator)?navigator.vibrate(8):pulseFallback(), {passive:true});
+    btn.addEventListener('click',()=> ('vibrate' in navigator)?navigator.vibrate(16):pulseFallback(), {passive:true});
+    btn.addEventListener('mouseenter',()=>{ if('vibrate' in navigator) navigator.vibrate(4); }, {passive:true});
   });
 
   show(0);
