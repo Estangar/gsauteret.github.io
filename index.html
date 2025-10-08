@@ -12,13 +12,13 @@
     --bg:#f9fafb; --text:#0f172a; --muted:#475569;
     --brand:#1e3a8a; --brand-ink:#0f1c4d; --accent:#fbbf24;
     --glass: rgba(255,255,255,.08);
-    --panel-w: 300px; /* desktop default */
+    --panel-w: 260px; /* plus étroit desktop */
   }
   @media (prefers-color-scheme:dark){
     :root{--bg:#0b0c10;--text:#e8eaed;--muted:#a6adbb;--brand:#1e40af;--brand-ink:#0b153a;--accent:#facc15; --glass: rgba(0,0,0,.25);}
   }
   @media (max-width:600px){
-    :root{ --panel-w: 72vw; }
+    :root{ --panel-w: 64vw; } /* plus étroit mobile */
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
@@ -59,26 +59,21 @@
 
   /* ===== Panneau menu ===== */
   .nav-panel{
-    position:fixed; inset:0 0 0 auto; width:var(--panel-w); max-width:360px; z-index:1090;
+    position:fixed; inset:0 0 0 auto; width:var(--panel-w); max-width:340px; z-index:1090;
     background:linear-gradient(0deg,var(--brand-ink),var(--brand));
     color:#fff; transform:translateX(100%); transition:transform .22s ease;
     box-shadow:-10px 0 24px rgba(0,0,0,.25);
-    display:flex; flex-direction:column; padding:18px;
+    display:flex; flex-direction:column; padding:16px 14px;
     touch-action:pan-y;
   }
   .nav-panel.open{ transform:translateX(0); }
-  .nav-panel h3{margin:4px 0 10px; font-size:18px; opacity:.9;}
+  .nav-panel h3{margin:2px 0 10px; font-size:18px; opacity:.9;}
   .nav-links{display:flex; flex-direction:column; gap:8px; margin-top:6px;}
   .nav-links a{
     color:#fff; text-decoration:none; font-weight:600; padding:10px 12px; border-radius:10px;
     background:transparent; transition:background .2s ease, color .2s ease;
   }
   .nav-links a:hover{ background:rgba(255,255,255,.1); color:var(--accent); }
-  .nav-close{margin-top:auto; font-size:14px; opacity:.85;}
-  .nav-close button{
-    margin-top:8px; width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,.25);
-    background:transparent; color:#fff; cursor:pointer;
-  }
   .nav-mask{
     position:fixed; inset:0; background:rgba(0,0,0,.35); backdrop-filter:blur(1px);
     z-index:1080; opacity:0; pointer-events:none; transition:opacity .2s ease;
@@ -87,13 +82,19 @@
 
   /* ===== Contenu ===== */
   main{max-width:980px; margin:0 auto; padding:18px 16px 24px;}
-  /* marge basse pour ne pas être masqué par les CTA sur petits écrans */
-  .content-pad{ padding-bottom: max(16px, 6vh); }
+  /* marges pour éviter recouvrement par header et CTA */
+  .content-pad{ padding-bottom: max(16px, 7vh); }
 
   .carousel{
-    position:relative; min-height:46vh; border-radius:14px; overflow:hidden;
+    position:relative; 
+    min-height:44vh; /* un peu plus compact pour laisser de la place au scroll */
+    border-radius:14px; overflow:hidden;
     display:flex; align-items:center; justify-content:center;
   }
+  @media (max-width:480px){
+    .carousel{ min-height:42vh; }
+  }
+
   .slide{
     position:absolute; inset:0; padding:0 22px;
     display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;
@@ -105,11 +106,15 @@
   .slide h2{ color:var(--brand); font-size:clamp(20px,4.8vw,28px); margin-bottom:6px; }
   .slide p{ max-width:760px; font-size:clamp(15px,4vw,18px); margin:6px 0; }
 
-  /* Indicateurs (points) */
-  .dots{ position:absolute; left:0; right:0; bottom:10px; display:flex; gap:8px; justify-content:center; }
-  .dot{ width:8px; height:8px; border-radius:999px; background:#e5e7eb; opacity:.9; transition:transform .2s ease, background .2s ease; }
-  .dot.active{ background:var(--accent); transform:scale(1.25) }
-  @media (prefers-color-scheme:dark){ .dot{ background:rgba(255,255,255,.25); } }
+  /* Indicateurs (points) — plus gros & plus hauts */
+  .dots{ position:absolute; left:0; right:0; bottom:22px; display:flex; gap:10px; justify-content:center; }
+  .dot{ width:12px; height:12px; border-radius:999px; background:#e5e7eb; opacity:.95; transition:transform .2s ease, background .2s ease; }
+  .dot.active{ background:var(--accent); transform:scale(1.15) }
+  @media (max-width:480px){
+    .dots{ bottom:20px; gap:8px; }
+    .dot{ width:10px; height:10px; }
+  }
+  @media (prefers-color-scheme:dark){ .dot{ background:rgba(255,255,255,.28); } }
 
   /* ===== CTA ===== */
   .cta{ max-width:980px; margin:0 auto 22px; padding:0 16px; display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
@@ -152,16 +157,13 @@
     <a href="references.html">Références</a>
     <a href="contact.html">Contact</a>
   </nav>
-  <div class="nav-close">
-    Astuce : balayez vers la droite pour fermer.
-    <button type="button" id="closePanel">Fermer</button>
-  </div>
+  <!-- plus de bouton "Fermer" ni d'astuce -->
 </aside>
 <div class="nav-mask" id="navMask" aria-hidden="true"></div>
 
 <main>
-  <section class="carousel content-pad" id="carousel" aria-roledescription="carousel" aria-label="Parcours, Vision, Devise, Projet (navigation au swipe, points de progression)">
-    <!-- Slides (sans flèches) -->
+  <section class="carousel content-pad" id="carousel" aria-roledescription="carousel" aria-label="Parcours, Vision, Devise, Projet (navigation swipe, clavier et points)">
+    <!-- Slides -->
     <article class="slide show" data-i="0">
       <h2>Mon parcours</h2>
       <p>Curieux et investi, j’ai exploré le recrutement dans toute sa diversité : du pré-recrutement d’alternants à la chasse de profils experts IT à l’international. J’ai appris à attirer, convaincre et fidéliser les talents, au-delà des seules compétences techniques.</p>
@@ -216,7 +218,6 @@
   const ham = document.getElementById('hamburger');
   const panel = document.getElementById('navPanel');
   const mask = document.getElementById('navMask');
-  const closeBtn = document.getElementById('closePanel');
 
   function openNav(){
     panel.classList.add('open');
@@ -231,14 +232,11 @@
     mask.setAttribute('aria-hidden','true');
   }
   ham.addEventListener('click', ()=>{
-    const opened = panel.classList.contains('open');
-    opened ? closeNav() : openNav();
+    panel.classList.contains('open') ? closeNav() : openNav();
     // haptique léger
-    if('vibrate' in navigator) navigator.vibrate(10);
+    try{ ('vibrate' in navigator) && navigator.vibrate(10); }catch(e){}
   });
-  closeBtn.addEventListener('click', closeNav);
   mask.addEventListener('click', closeNav);
-
   // swipe pour fermer le panneau
   let px0=null;
   panel.addEventListener('touchstart', e=>{ px0 = e.touches[0].clientX; }, {passive:true});
@@ -249,7 +247,7 @@
     px0=null;
   }, {passive:true});
 
-  /* ===== Carrousel (swipe + points ; pas de flèches) ===== */
+  /* ===== Carrousel (swipe, points, clavier, drag souris) ===== */
   const slides = [...document.querySelectorAll('.slide')];
   const dots = [...document.querySelectorAll('.dot')];
   const wrap = document.getElementById('carousel');
@@ -265,7 +263,7 @@
   }
   const buzz = ms => { try{ ('vibrate' in navigator) && navigator.vibrate(ms); }catch(e){} };
 
-  // Swipe horizontal
+  // Swipe tactile (mobile)
   let x0=null, y0=null;
   wrap.addEventListener('touchstart', e=>{ x0=e.touches[0].clientX; y0=e.touches[0].clientY; }, {passive:true});
   wrap.addEventListener('touchend', e=>{
@@ -277,6 +275,23 @@
     }
     x0=y0=null;
   }, {passive:true});
+
+  // Drag souris (desktop)
+  let mx0=null, dragging=false;
+  wrap.addEventListener('mousedown', e=>{ dragging=true; mx0=e.clientX; });
+  wrap.addEventListener('mouseup', e=>{
+    if(!dragging) return;
+    const dx = e.clientX - mx0;
+    if(Math.abs(dx) > 40){ dx<0 ? (show(i+1), buzz(8)) : (show(i-1), buzz(8)); }
+    dragging=false; mx0=null;
+  });
+  wrap.addEventListener('mouseleave', ()=>{ dragging=false; mx0=null; });
+
+  // Clavier (gauche/droite)
+  document.addEventListener('keydown', e=>{
+    if(e.key==='ArrowRight'){ e.preventDefault(); show(i+1); buzz(10); }
+    if(e.key==='ArrowLeft'){ e.preventDefault(); show(i-1); buzz(10); }
+  });
 
   // Points cliquables
   dots.forEach(d=>{
