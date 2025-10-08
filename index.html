@@ -17,19 +17,22 @@
   }
 
   *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
   body{
     font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,sans-serif;
     background:var(--bg);color:var(--text);line-height:1.6;
+    /* Limite le "pull-to-refresh" sur Android/Chrome */
+    overscroll-behavior-y: contain;
   }
 
-  /* NAVIGATION — une seule ligne, défilable en très petit écran (pas de 2e ligne) */
+  /* NAV mono-ligne défilable en très petit écran */
   nav{
     position:fixed;top:0;left:0;right:0;height:56px;z-index:1000;
     background:var(--brand);box-shadow:0 2px 6px rgba(0,0,0,.1);
     display:block;white-space:nowrap;overflow-x:auto;overflow-y:hidden;
-    -webkit-overflow-scrolling:touch;scrollbar-width:none; /* Firefox */
+    -webkit-overflow-scrolling:touch;scrollbar-width:none;
   }
-  nav::-webkit-scrollbar{display:none} /* WebKit */
+  nav::-webkit-scrollbar{display:none}
   nav a{
     display:inline-block;vertical-align:middle;
     color:#fff;text-decoration:none;font-weight:600;
@@ -51,13 +54,17 @@
   main{max-width:900px;margin:0 auto;padding:20px 16px;}
 
   /* SLIDES */
-  .wrap{position:relative;display:flex;justify-content:center;align-items:center;overflow:hidden;min-height:48vh;}
+  .wrap{
+    position:relative;display:flex;justify-content:center;align-items:center;
+    overflow:hidden;min-height:48vh;touch-action:pan-x pan-y;
+  }
   .slide{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0;transition:opacity .6s ease;padding:0 18px;}
   .slide.show{opacity:1;}
   .slide h2{color:var(--brand);font-size:clamp(20px,4.8vw,30px);}
   .slide p{max-width:760px;font-size:clamp(15px,4vw,18px);margin:8px 0 10px;}
+  .lead{font-weight:700}
 
-  /* PROGRESS BAR (plus proche du texte) */
+  /* PROGRESS BAR */
   .progress{width:60%;max-width:440px;height:4px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:6px;}
   .bar{height:100%;width:0;background:var(--accent);}
   @media (prefers-color-scheme:dark){.progress{background:rgba(255,255,255,.18);}}
@@ -65,7 +72,7 @@
   .hint{color:var(--muted);font-size:14px;margin-top:6px;}
   .pause-msg{display:none;color:var(--accent);font-weight:600;font-size:14px;margin-top:6px;}
 
-  /* CTA BUTTONS (avec pulse visuel fallback) */
+  /* CTA BUTTONS + fallback visuel si pas d’haptique */
   .cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px;}
   .btn{
     display:inline-flex;align-items:center;justify-content:center;
@@ -78,8 +85,6 @@
   .btn:active{transform:scale(.97);}
   .btn.pulse{animation:pulse .18s ease-out;}
   @keyframes pulse{0%{transform:scale(1)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
-
-  footer{text-align:center;color:var(--muted);padding:22px 0;font-size:14px;}
 
   @media (max-width:480px){
     nav a{font-size:14px;padding:0 10px;}
@@ -96,7 +101,7 @@
     <a href="cvinteractif.html">Mon CV</a>
     <a href="references.html">Références</a>
     <a href="contact.html">Contact</a>
-    <!-- Lien LinkedIn retiré pour éviter tout débordement au-dessus du header -->
+    <!-- Lien LinkedIn retiré -->
   </nav>
 
   <header>
@@ -132,8 +137,10 @@
 
       <article class="slide">
         <h2>Mon projet</h2>
-        <p>Après une expérience riche en recrutement international sur des technologies de pointe et dans des marchés tendus, je souhaite aujourd’hui rejoindre en <strong>CDI</strong> une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe. Ma <strong>situation de handicap</strong> m’a appris à m’adapter, à penser autrement et à trouver des solutions utiles au collectif. Mon objectif : contribuer concrètement à la croissance d’équipes qui innovent et qui avancent.</p>
-        <!-- Barre de progression bien présente sous ce slide -->
+        <p>Après une expérience riche en recrutement international sur des technologies de pointe, dans des marchés tendus, je souhaite aujourd’hui rejoindre en CDI une entreprise ambitieuse qui valorise la précision, l’impact et l’esprit d’équipe.</p>
+        <p>Ma situation de handicap m’a <em>poussé</em> à m’adapter, à penser autrement et à transformer des fragilités individuelles en forces collectives.</p>
+        <p>Je cherche un nouveau challenge : je suis curieux, j’apprends de chaque expérience et j’ai soif de réussite.</p>
+        <p><span class="lead">Mon objectif :</span> contribuer concrètement à la croissance d’équipes qui innovent et avancent, avec exigence et sens du résultat.</p>
         <div class="progress"><div class="bar"></div></div>
         <p class="hint">Cliquez pour mettre en pause / reprendre • balayez pour avancer ↔︎</p>
         <p class="pause-msg">Lecture en pause… cliquez pour reprendre</p>
@@ -150,7 +157,6 @@
   <footer>© 2025 Grégory Sauteret</footer>
 
   <script>
-    // Carrousel + pause/reprise + swipe + haptique (avec fallback visuel)
     const slides = [...document.querySelectorAll('.slide')];
     let i=0, timer=null, paused=false;
     const AUTO=12000;
@@ -183,6 +189,8 @@
     const supportsVibrate = typeof navigator !== 'undefined' && 'vibrate' in navigator;
 
     const wrap=document.getElementById('carousel');
+
+    // Pause / reprise au clic
     wrap.addEventListener('click',()=>{
       paused=!paused;
       const msg=pauseMsg();
@@ -197,28 +205,41 @@
       }
     });
 
-    // Swipe
-    let startX=null;
-    wrap.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+    // Swipe gauche/droite
+    let startX=null, startY=null;
+    wrap.addEventListener('touchstart',e=>{
+      startX=e.touches[0].clientX;
+      startY=e.touches[0].clientY;
+      // petit retour haptique sur prise de focus tactile
+      if(supportsVibrate) navigator.vibrate(8);
+    },{passive:true});
+
+    // Empêche le "pull-to-refresh" dans le carrousel sur iOS en cas de tirage vertical depuis le haut
+    wrap.addEventListener('touchmove',e=>{
+      const y=e.touches[0].clientY;
+      const dy=y - (startY ?? y);
+      const atTop = window.scrollY <= 0 || document.documentElement.scrollTop <= 0;
+      // si on tire vers le bas au sommet de la page, on bloque pour ne pas rafraîchir
+      if(dy > 10 && atTop){
+        e.preventDefault(); // nécessite {passive:false}
+      }
+    },{passive:false});
+
     wrap.addEventListener('touchend',e=>{
-      if(startX===null)return;
-      const dx=e.changedTouches[0].clientX-startX;
+      const dx=e.changedTouches[0].clientX - (startX ?? e.changedTouches[0].clientX);
       if(Math.abs(dx)>40){
         if(supportsVibrate) navigator.vibrate(30);
         dx<0?next():prev();
       }
-      startX=null;
+      startX=null; startY=null;
     },{passive:true});
 
-    // Feedback visuel pour les boutons si pas d’haptique
+    // Feedback haptique/visuel sur les boutons
     document.querySelectorAll('.btn').forEach(btn=>{
-      btn.addEventListener('click',()=>{
-        if(supportsVibrate) navigator.vibrate(18);
-        else { btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); }
-      },{passive:true});
-      btn.addEventListener('mouseenter',()=>{
-        if(supportsVibrate) navigator.vibrate(8);
-      },{passive:true});
+      const pulseFallback = ()=>{ btn.classList.add('pulse'); setTimeout(()=>btn.classList.remove('pulse'), 180); };
+      btn.addEventListener('touchstart',()=> supportsVibrate ? navigator.vibrate(10) : pulseFallback(), {passive:true});
+      btn.addEventListener('click',()=> supportsVibrate ? navigator.vibrate(18) : pulseFallback(), {passive:true});
+      btn.addEventListener('mouseenter',()=>{ if(supportsVibrate) navigator.vibrate(6); },{passive:true});
     });
 
     show(0);play();
